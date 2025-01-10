@@ -10,12 +10,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
 
 @WebServlet("/appreciations")
 public class AppreciationController extends HttpServlet {
@@ -83,5 +82,25 @@ public class AppreciationController extends HttpServlet {
             e.printStackTrace();
         }
         return appreciations; // Retourner la liste d'appréciations
+    }
+
+
+    public void updateAppreciation(Appreciation appreciation) {
+        String sql = "UPDATE appreciations SET nom = ?, prenom = ?, appreciation = ?, date = ? WHERE id = ?";
+
+        try (Connection connection = dao.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, appreciation.getNom());
+            statement.setString(2, appreciation.getPrenom());
+            statement.setString(3, appreciation.getAppreciation());
+            statement.setTimestamp(4, new Timestamp(appreciation.getDate().getTime())); // Convertir la date en Timestamp
+            statement.setInt(5, appreciation.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour de l'appréciation.", e);
+        }
     }
 }

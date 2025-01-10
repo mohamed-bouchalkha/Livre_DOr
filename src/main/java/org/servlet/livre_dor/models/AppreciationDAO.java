@@ -54,7 +54,31 @@ public class AppreciationDAO {
         }
         return appreciations;
     }
+    public Appreciation getAppreciationById(int id) {
+        Appreciation appreciation = null;
+        String sql = "SELECT * FROM appreciations WHERE id = ?";
 
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                appreciation = new Appreciation();
+                appreciation.setId(resultSet.getInt("id"));
+                appreciation.setNom(resultSet.getString("nom"));
+                appreciation.setPrenom(resultSet.getString("prenom"));
+                appreciation.setAppreciation(resultSet.getString("appreciation"));
+                appreciation.setDate(resultSet.getTimestamp("date")); // Ajustez selon la façon dont la date est stockée
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la récupération de l'appréciation.", e);
+        }
+
+        return appreciation;
+    }
     public void deleteAppreciation(int id) {
         String sql = "DELETE FROM appreciations WHERE id = ?";
 
