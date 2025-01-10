@@ -92,6 +92,24 @@ public class AppreciationDAO {
             throw new RuntimeException("Erreur lors de la suppression de l'appréciation.", e);
         }
     }
+    public void updateAppreciation(Appreciation appreciation) {
+        String sql = "UPDATE appreciations SET nom = ?, prenom = ?, appreciation = ?, date = ? WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, appreciation.getNom());
+            statement.setString(2, appreciation.getPrenom());
+            statement.setString(3, appreciation.getAppreciation());
+            statement.setTimestamp(4, new Timestamp(appreciation.getDate().getTime())); // Convertir la date en Timestamp
+            statement.setInt(5, appreciation.getId()); // Définir l'ID de l'appréciation à mettre à jour
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour de l'appréciation.", e);
+        }
+    }
 
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a9e8c712-dcc5-449b-9be3-9a25decef47f" name="widlify" url="http://localhost">
+        <fileTransfer mountedRoot="G:\wildfly-35.0.0.Beta1" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

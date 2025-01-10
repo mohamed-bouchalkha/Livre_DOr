@@ -10,32 +10,44 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.sql.DriverManager.getConnection;
 
 @WebServlet("/appreciations")
 public class AppreciationController extends HttpServlet {
     private final AppreciationDAO dao = new AppreciationDAO();
 
-    // Méthode pour gérer la soumission d'un nouveau formulaire d'appréciation
+    // Méthode pour gérer la soumission d'un formulaire d'appréciation
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String idString = request.getParameter("id");
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         String appreciation = request.getParameter("appreciation");
 
-        Appreciation newAppreciation = new Appreciation();
-        newAppreciation.setNom(nom);
-        newAppreciation.setPrenom(prenom);
-        newAppreciation.setAppreciation(appreciation);
+        // Si un ID est présent, on modifie une appréciation existante
+        if (idString != null && !idString.isEmpty()) {
+            int id = Integer.parseInt(idString);
+            Appreciation appreciationToUpdate = new Appreciation();
+            appreciationToUpdate.setId(id);
+            appreciationToUpdate.setNom(nom);
+            appreciationToUpdate.setPrenom(prenom);
+            appreciationToUpdate.setAppreciation(appreciation);
+            appreciationToUpdate.setCurrentDate(); // Définir la date actuelle
 
-        // Sauvegarde de l'appréciation dans la base de données
-        dao.saveAppreciation(newAppreciation);
-        response.sendRedirect("appreciations");
+            dao.updateAppreciation(appreciationToUpdate); // Mise à jour de l'appréciation
+        } else {
+            // Sinon, on ajoute une nouvelle appréciation
+            Appreciation newAppreciation = new Appreciation();
+            newAppreciation.setNom(nom);
+            newAppreciation.setPrenom(prenom);
+            newAppreciation.setAppreciation(appreciation);
+            newAppreciation.setCurrentDate(); // Définir la date actuelle
+
+            dao.saveAppreciation(newAppreciation); // Sauvegarde de l'appréciation
+        }
+
+        response.sendRedirect("appreciations"); // Redirige vers la page des appréciations après la soumission
     }
 
     // Méthode pour gérer la récupération des appréciations et suppression
@@ -61,46 +73,13 @@ public class AppreciationController extends HttpServlet {
         request.getRequestDispatcher("appreciations.jsp").forward(request, response);
     }
 
-    // Méthode pour récupérer toutes les appréciations de la base de données
-    public List<Appreciation> getAllAppreciations() {
-        List<Appreciation> appreciations = new ArrayList<>();
-        String sql = "SELECT * FROM appreciations"; // Requête SQL pour récupérer toutes les appréciations
-        try (Connection connection = dao.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                // Création d'une nouvelle appréciation à partir des données récupérées de la base
-                Appreciation appreciation = new Appreciation();
-                appreciation.setId(rs.getInt("id"));
-                appreciation.setNom(rs.getString("nom"));
-                appreciation.setPrenom(rs.getString("prenom"));
-                appreciation.setAppreciation(rs.getString("appreciation"));
-                appreciation.setDate(rs.getTimestamp("date")); // Récupérer la date sous forme de Timestamp
-                appreciations.add(appreciation); // Ajouter l'appréciation à la liste
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return appreciations; // Retourner la liste d'appréciations
+    // Méthode pour récupérer une appréciation spécifique par son ID
+    public Appreciation getAppreciationById(int id) {
+        return dao.getAppreciationById(id);
     }
 
-
+    // Méthode pour mettre à jour une appréciation dans la base de données
     public void updateAppreciation(Appreciation appreciation) {
-        String sql = "UPDATE appreciations SET nom = ?, prenom = ?, appreciation = ?, date = ? WHERE id = ?";
-
-        try (Connection connection = dao.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, appreciation.getNom());
-            statement.setString(2, appreciation.getPrenom());
-            statement.setString(3, appreciation.getAppreciation());
-            statement.setTimestamp(4, new Timestamp(appreciation.getDate().getTime())); // Convertir la date en Timestamp
-            statement.setInt(5, appreciation.getId());
-
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erreur lors de la mise à jour de l'appréciation.", e);
-        }
+        dao.updateAppreciation(appreciation);
     }
 }

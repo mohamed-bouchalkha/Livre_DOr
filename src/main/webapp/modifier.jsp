@@ -1,3 +1,5 @@
+
+<!-- modifier.jsp -->
 <%@ page import="org.servlet.livre_dor.models.Appreciation" %>
 <%@ page import="org.servlet.livre_dor.models.AppreciationDAO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -6,59 +8,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier l'appréciation</title>
+    <title>Livre d'Or - Modifier l'appréciation</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-50">
+<!-- En-tête -->
+<header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex items-center gap-4">
+            <a href="appreciations" class="text-gray-600 hover:text-gray-900">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900">Modifier l'appréciation</h1>
+        </div>
+    </div>
+</header>
 
-<div class="container mx-auto px-6 py-12">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Modifier l'appréciation</h2>
-
+<main class="max-w-3xl mx-auto px-4 py-8">
     <%
-        // Récupérer l'ID de l'appréciation à modifier
         String idString = request.getParameter("id");
         if (idString != null) {
             int id = Integer.parseInt(idString);
-
-            // Récupérer l'appréciation à modifier via le DAO
             AppreciationDAO dao = new AppreciationDAO();
             Appreciation appreciation = dao.getAppreciationById(id);
+            if (appreciation != null) {
     %>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <form action="appreciations" method="post" class="space-y-6">
+            <input type="hidden" name="id" value="<%= appreciation.getId() %>">
 
-    <!-- Formulaire de modification -->
-    <form action="appreciations" method="post" class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <input type="hidden" name="id" value="<%= appreciation.getId() %>">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
+                    <input type="text" id="nom" name="nom" value="<%= appreciation.getNom() %>" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" value="<%= appreciation.getPrenom() %>" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+            </div>
 
-        <div class="mb-4">
-            <label for="nom" class="block text-gray-700">Nom :</label>
-            <input type="text" id="nom" name="nom" value="<%= appreciation.getNom() %>" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
+            <div>
+                <label for="appreciation" class="block text-sm font-medium text-gray-700">Votre appréciation</label>
+                <textarea id="appreciation" name="appreciation" rows="5" required
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><%= appreciation.getAppreciation() %></textarea>
+            </div>
 
-        <div class="mb-4">
-            <label for="prenom" class="block text-gray-700">Prénom :</label>
-            <input type="text" id="prenom" name="prenom" value="<%= appreciation.getPrenom() %>" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="mb-4">
-            <label for="appreciation" class="block text-gray-700">Appréciation :</label>
-            <textarea id="appreciation" name="appreciation" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"><%= appreciation.getAppreciation() %></textarea>
-        </div>
-
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-            Modifier l'appréciation
-        </button>
-    </form>
-
+            <div class="flex justify-end gap-4">
+                <a href="appreciations"
+                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Annuler
+                </a>
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Enregistrer les modifications
+                </button>
+            </div>
+        </form>
+    </div>
     <%
-        } else {
-            out.println("<p class='text-red-500'>Erreur : ID non valide.</p>");
+    } else {
+    %>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        L'appréciation demandée n'existe pas.
+    </div>
+    <%
+        }
+    } else {
+    %>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        ID non valide.
+    </div>
+    <%
         }
     %>
-
-    <div class="text-center mt-6">
-        <a href="appreciations" class="text-blue-500 hover:text-blue-700 font-semibold">Retour à la liste des appréciations</a>
-    </div>
-</div>
-
+</main>
 </body>
 </html>
