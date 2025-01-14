@@ -9,14 +9,13 @@ import jakarta.servlet.http.HttpSession;
 import org.servlet.livre_dor.models.User;
 import org.servlet.livre_dor.models.UserDAO;
 
-
 import java.io.IOException;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServletException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -35,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             // Sauvegarder l'ID de l'utilisateur dans la session
             HttpSession session = request.getSession();
             session.setAttribute("userId", user.getId());
-            System.out.println("user loged succesfully:"+user.getId());
+            System.out.println("user logged successfully: " + user.getId());
             // Rediriger vers la page d'appréciation
             response.sendRedirect("appreciation.jsp");
         } else {

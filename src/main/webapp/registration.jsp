@@ -6,56 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Livre d'Or</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Ajouter les liens pour Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body class="bg-gray-50">
-<jsp:include page="header.jsp" />
 
-<main class="max-w-3xl mx-auto px-4 py-8">
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900">Créer un compte</h2>
-        <p class="mt-2 text-gray-600">Rejoignez notre communauté et partagez vos expériences.</p>
+<main class="font-[sans-serif] relative">
+    <div class="h-[240px] font-[sans-serif]">
+        <img src="https://readymadeui.com/cardImg.webp" alt="Banner Image" class="w-full h-full object-cover" />
     </div>
 
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <form action="register" method="POST" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
-                    <input type="text" id="nom" name="nom" required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+    <div class="relative -mt-40 m-4">
+        <form class="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-6 sm:p-8 rounded-2xl" action="register" method="POST">
+            <div class="mb-12">
+                <h3 class="text-gray-800 text-3xl text-center">Créer un compte</h3>
+            </div>
+
+            <!-- Nom -->
+            <div class="mt-8">
+                <label class="text-gray-800 text-xs block mb-2">Nom</label>
+                <div class="relative flex items-center">
+                    <input name="nom" type="text" required class="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Entrez votre nom" />
                 </div>
-                <div>
-                    <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
-                    <input type="text" id="prenom" name="prenom" required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <!-- Prénom -->
+            <div class="mt-8">
+                <label class="text-gray-800 text-xs block mb-2">Prénom</label>
+                <div class="relative flex items-center">
+                    <input name="prenom" type="text" required class="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Entrez votre prénom" />
                 </div>
             </div>
 
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="email" name="email" required
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <div class="mt-8">
+                <label class="text-gray-800 text-xs block mb-2">Email</label>
+                <div class="relative flex items-center">
+                    <input name="email" type="email" required class="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Entrez votre email" />
+                </div>
             </div>
 
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                <input type="password" id="password" name="password" required
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <div class="mt-8">
+                <label class="text-gray-800 text-xs block mb-2">Mot de passe</label>
+                <div class="relative flex items-center">
+                    <input name="password" type="password" required class="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Entrez votre mot de passe" />
+                </div>
             </div>
 
-            <div class="flex justify-end gap-4">
-                <a href="index.jsp"
-                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    <i class="fas fa-times mr-2"></i> Annuler
-                </a>
-                <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                    <i class="fas fa-user-plus mr-2"></i> S'inscrire
+            <div class="flex items-center mt-8">
+                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 rounded" />
+
+            </div>
+
+            <div class="mt-8">
+                <button type="submit" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
+                    S'inscrire
                 </button>
+                <p class="text-gray-800 text-sm mt-4 text-center">Vous avez déjà un compte? <a href="login.jsp" class="text-blue-500 font-semibold hover:underline ml-1">Connectez-vous ici</a></p>
             </div>
         </form>
     </div>
 </main>
+
+<!-- Script pour afficher le message toastr après l'enregistrement réussi -->
+<script>
+    // Vérifier si l'utilisateur a été enregistré avec succès, ici vous pouvez ajouter une variable ou une condition selon votre logique
+    // Exemple simple de condition (vous devez ajuster selon la logique de votre back-end)
+    const userRegistered = true; // À remplacer par la condition réelle
+
+    if (userRegistered) {
+        toastr.success('Votre inscription a été réussie !', 'Succès', {
+            positionClass: 'toast-top-center',
+            timeOut: 5000, // La notification disparaît après 5 secondes
+        });
+    }
+</script>
+
 </body>
 </html>

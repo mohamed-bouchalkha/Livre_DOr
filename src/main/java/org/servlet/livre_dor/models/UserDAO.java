@@ -24,6 +24,8 @@ public class UserDAO {
             return false;
         }
     }
+
+    // Méthode pour authentifier l'utilisateur
     public User authenticateUser(String email, String password) {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -44,10 +46,13 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 return user;
+            } else {
+                // Si aucun utilisateur n'est trouvé avec les informations données
+                return null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return null; // En cas d'erreur lors de la connexion à la base de données
         }
-        return null; // L'utilisateur n'a pas été trouvé
     }
 }
