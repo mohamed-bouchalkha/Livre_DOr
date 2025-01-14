@@ -54,10 +54,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center mt-8">
-                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 rounded" />
-
-            </div>
+           
 
             <div class="mt-8">
                 <button type="submit" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
