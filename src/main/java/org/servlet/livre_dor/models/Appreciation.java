@@ -3,12 +3,17 @@ package org.servlet.livre_dor.models;
 import java.util.Date;
 
 public class Appreciation {
-    private int id;
-    private String nom;
-    private String prenom;
-    private String appreciation;
-    private Date date; // Nouveau champ pour la date
 
+    private int id;
+    private User user;
+    private String appreciation;
+    private Date date;
+
+    public Appreciation() {
+        this.date = new Date(); // Initialiser la date à la date courante
+    }
+
+    // Getters et setters
     public int getId() {
         return id;
     }
@@ -17,20 +22,12 @@ public class Appreciation {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public User getUser() {
+        return user;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAppreciation() {
@@ -45,13 +42,7 @@ public class Appreciation {
         return date;
     }
 
-    // Le setter pour la date n'est pas nécessaire car la date sera définie automatiquement
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    // Méthode pour récupérer la date au format Date si nécessaire
-    public void setCurrentDate() {
-        this.date = new Date(); // Initialiser la date à la date courante
     }
 }
